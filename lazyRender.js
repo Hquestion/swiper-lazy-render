@@ -19,18 +19,21 @@ export default {
                 }
             },
             update: function (el, binding, vNode) {
-                console.log('update');
                 if (!el[ctx] || !el[ctx].isBound) {
                     if (el.swiper) {
                         el[ctx] = {};
-                        el[ctx].isBound = true;
                         let vm = vNode.context;
                         let expression = binding.value;
                         let renderData = el.getAttribute('renderData');
                         let startIndex = 0;
                         let total = expression.length;
                         //初始化赋值
-                        vm[renderData] = expression.slice(0, SWIPER_SLIDE_SIZE);
+                        if(expression && expression.length > 0) {
+                            el[ctx].isBound = true;
+                            vm[renderData] = expression.slice(0, SWIPER_SLIDE_SIZE);
+                        }else {
+                            return;
+                        }
                         el.swiper.on('slideChangeEnd', function (swiper) {
                             swiper.lockSwipes();
                             let activeIndex = swiper.activeIndex;
